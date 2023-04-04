@@ -1,0 +1,11 @@
+import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
+import Logger from '@ioc:Adonis/Core/Logger'
+
+export default class {{ filename }} extends BaseSeeder {
+  public static async run () {
+    Logger.info('seeding {{ seedingText }}')
+    // Write your database queries inside the run method
+    // remember to import it in seeders/Database.ts
+    Logger.info('done seeding {{ seedingText }}')
+  }
+}

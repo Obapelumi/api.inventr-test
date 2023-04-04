@@ -1,0 +1,6 @@
+import { AuthContract } from '@ioc:Adonis/Addons/Auth'
+import {{ validatorName }}Validator from '{{#validatorPath}}{{/validatorPath}}'
+
+export default class {{ filename }} {
+  public static async handle({} : {{ validatorName }}Validator['schema']['props'], auth: AuthContract) {}
+}

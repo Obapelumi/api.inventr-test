@@ -1,0 +1,4 @@
+enum {{ filename }} {
+}
+export type {{ filename }}Key = keyof typeof {{ filename }}
+export default {{ filename }}
