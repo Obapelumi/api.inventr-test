@@ -25,5 +25,11 @@
       }
     ]
   },
-  "testProviders": ["@japa/preset-adonis/TestsProvider"]
+  "testProviders": ["@japa/preset-adonis/TestsProvider"],
+  "metaFiles": [
+    {
+      "pattern": ".env",
+      "reloadServer": false
+    }
+  ]
 }
