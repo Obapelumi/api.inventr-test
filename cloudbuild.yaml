@@ -1,0 +1,29 @@
+steps:
+  # Fetch environment variables from storage
+  - name: gcr.io/cloud-builders/gsutil
+    args: ['cp', 'gs://inventr-test/deployment-files/${_ENV}.env', '.env']
+  # Override .gitignore because it makes .dockerignore ignore environment variables
+  - name: gcr.io/cloud-builders/gsutil
+    args: ['cp', 'gs://inventr-test/deployment-files/.gitignore', '.gitignore']
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/artisandesk/api-inventr-test', '.']
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/artisandesk/api-inventr-test']
+  # Deploy container image to Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      [
+        'run',
+        'deploy',
+        'api-inventr-test',
+        '--image',
+        'gcr.io/artisandesk/api-inventr-test',
+        '--region',
+        'us-central1',
+        '--platform',
+        'managed',
+        '--allow-unauthenticated'
+      ]

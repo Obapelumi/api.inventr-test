@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "node ace serve --watch",
     "build": "node ace build --production",
-    "start": "node server.js",
-    "test": "node ace test"
+    "start": "node build/server.js",
+    "test": "node ace test",
+    "update-env": "gsutil -m cp -r tmp/deployment-files gs://inventr-test"
   },
   "devDependencies": {
     "@adonisjs/assembler": "^5.9.5",
