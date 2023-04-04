@@ -79,7 +79,8 @@ export default class Epo {
       ]?.find(Boolean)?.date?.$ ?? '',
       'yyyyMMdd'
     )
-    const patentNumber = result['exchange-document']['@doc-number']
+    const patentNumber =
+      result['exchange-document']['@country'] + result['exchange-document']['@doc-number']
     const applicantArray =
       result['exchange-document']['bibliographic-data']?.parties?.applicants?.applicant
     const applicant = Array.isArray(applicantArray)
