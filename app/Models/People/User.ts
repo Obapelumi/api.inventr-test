@@ -3,7 +3,6 @@ import Hash from '@ioc:Adonis/Core/Hash'
 import { column, beforeSave, BaseModel, BelongsTo, belongsTo, scope } from '@ioc:Adonis/Lucid/Orm'
 import Company from '../Portfolio/Company'
 import { search } from 'adosearch'
-import { countRelations, sumRelations } from 'App/Helpers/Model'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true, serializeAs: null })
@@ -40,12 +39,7 @@ export default class User extends BaseModel {
   /**
    * Relationships
    */
-  @belongsTo(() => Company, {
-    onQuery: (query) => {
-      sumRelations(query, ['patentCosts.amount', 'ipPortfolios.budget'])
-      countRelations(query, ['patents'])
-    }
-  })
+  @belongsTo(() => Company)
   public company: BelongsTo<typeof Company>
 
   /**

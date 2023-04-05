@@ -4,6 +4,7 @@ import User from '../People/User'
 import IpPortfolio from './IpPortfolio'
 import Patent from './Patent'
 import PatentCost from './PatentCost'
+import { search } from 'adosearch'
 
 export default class Company extends BaseModel {
   @column({ isPrimary: true, serializeAs: null })
@@ -43,4 +44,9 @@ export default class Company extends BaseModel {
 
   @hasMany(() => User)
   public users: HasMany<typeof User>
+
+  /**
+   * Scopes
+   */
+  public static search = search(this, ['name'])
 }

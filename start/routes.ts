@@ -47,6 +47,7 @@ Route.resource('users', 'People/UsersController')
  */
 
 Route.group(() => {
+  Route.resource('companies', 'CompaniesController').only(['index', 'show'])
   Route.resource('ip-portfolios', 'IpPortfoliosController').apiOnly()
   Route.get('patent-search', 'PatentsController.search').as('patents.search')
   Route.resource('patents', 'PatentsController').only(['index', 'store', 'show', 'destroy'])
