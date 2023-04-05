@@ -28,6 +28,7 @@ export default class StorePatentCostValidator {
   public schema = schema.create({
     amount: schema.number(),
     type: schema.enum(enumKeys(PatentCostType)),
+    transactionDate: schema.date(),
     patentId: schema.string({}, [rules.exists({ table: 'patents', column: 'uuid' })])
   })
 

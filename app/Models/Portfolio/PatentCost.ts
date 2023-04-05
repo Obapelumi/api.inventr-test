@@ -1,5 +1,5 @@
-import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column, scope } from '@ioc:Adonis/Lucid/Orm'
+import { DateTime, DurationLike } from 'luxon'
+import { BaseModel, BelongsTo, belongsTo, column, computed, scope } from '@ioc:Adonis/Lucid/Orm'
 import PatentCostType from './PatentCostType'
 import Company from './Company'
 import User from '../People/User'
@@ -20,6 +20,9 @@ export default class PatentCost extends BaseModel {
   @column()
   public amount: number
 
+  @column.date()
+  public transactionDate: DateTime
+
   @column({ serializeAs: null })
   public patentId: number
 
@@ -37,6 +40,26 @@ export default class PatentCost extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  /**
+   * Computed
+   */
+  @computed()
+  public get duration(): DurationLike {
+    return this.type === PatentCostType.filing ? { year: 1 } : { months: 3 }
+  }
+
+  @computed()
+  public get renewalDate(): DateTime {
+    return this.transactionDate && this.transactionDate.plus(this.duration)
+  }
+
+  @computed()
+  public get isDue() {
+    if (this.renewalDate) {
+      return DateTime.now().startOf('day') > this.renewalDate.startOf('day')
+    }
+  }
 
   /**
    * Relationships

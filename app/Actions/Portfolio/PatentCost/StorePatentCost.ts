@@ -6,13 +6,14 @@ import StorePatentCostValidator from 'App/Validators/Portfolio/PatentCost/StoreP
 
 export default class StorePatentCost {
   public static async handle(
-    { type, amount, patentId }: StorePatentCostValidator['schema']['props'],
+    { type, amount, patentId, transactionDate }: StorePatentCostValidator['schema']['props'],
     auth: AuthContract
   ) {
     const patent = await Patent.findByOrFail('uuid', patentId)
     const patentCost = await PatentCost.create({
       amount,
       type: PatentCostType[type],
+      transactionDate,
       patentId: patent.id,
       ipPortfolioId: patent.ipPortfolioId,
       companyId: patent.companyId,

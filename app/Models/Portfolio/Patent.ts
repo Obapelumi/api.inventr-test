@@ -72,7 +72,7 @@ export default class Patent extends BaseModel {
   @belongsTo(() => User, { foreignKey: 'createdBy' })
   public creator: BelongsTo<typeof User>
 
-  @hasMany(() => PatentCost)
+  @hasMany(() => PatentCost, { onQuery: (q) => q.orderBy('transaction_date', 'desc') })
   public costs: HasMany<typeof PatentCost>
 
   /**
