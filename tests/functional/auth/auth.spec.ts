@@ -1,6 +1,5 @@
-import TestUtils from '@ioc:Adonis/Core/TestUtils'
 import { test } from '@japa/runner'
-import { Auth, getUser, registerUser } from '../base'
+import { Auth, getUser, testSetup } from '../base'
 
 test('display welcome page', async ({ client }) => {
   const response = await client.get('/')
@@ -10,8 +9,7 @@ test('display welcome page', async ({ client }) => {
 })
 
 test.group('Auth', (group) => {
-  group.setup(registerUser)
-  group.teardown(TestUtils.db().truncate)
+  group.setup(testSetup)
 
   test('login an existing user', async ({ client, assert }) => {
     const user = await getUser(['company'])

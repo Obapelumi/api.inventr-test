@@ -1,15 +1,12 @@
-import TestUtils from '@ioc:Adonis/Core/TestUtils'
 import { test } from '@japa/runner'
 import Patent from 'App/Models/Portfolio/Patent'
-import { getUser, registerUser } from '../base'
-
-const TEST_PATENT_NUMBER = '2023099570'
+import { getUser, makeEpoMock, testSetup, TEST_PATENT_NUMBER } from '../base'
 
 test.group('Portfolio -> Patents', (group) => {
-  group.setup(registerUser)
-  group.teardown(TestUtils.db().truncate)
+  group.setup(testSetup)
 
   test('store patent', async ({ client, assert }) => {
+    const epoMock = makeEpoMock()
     const user = await getUser(['company'])
     const portfolioResponse = await client
       .post('ip-portfolios')
@@ -25,6 +22,9 @@ test.group('Portfolio -> Patents', (group) => {
       title: 'SYSTEMS AND METHODS FOR ARTIFICIAL INTELLIGENCE (AI) ERGONOMIC POSITIONING',
       patentNumber: TEST_PATENT_NUMBER
     })
+
+    epoMock.verify()
+    epoMock.restore()
   })
 
   test('list patents', async ({ client }) => {

@@ -1,11 +1,9 @@
-import TestUtils from '@ioc:Adonis/Core/TestUtils'
 import { test } from '@japa/runner'
 import IpPortfolio from 'App/Models/Portfolio/IpPortfolio'
-import { getUser, registerUser } from '../base'
+import { getUser, testSetup } from '../base'
 
 test.group('Portfolio -> ip portfolios', (group) => {
-  group.setup(registerUser)
-  group.teardown(TestUtils.db().truncate)
+  group.setup(testSetup)
 
   test('list ip portfolios', async ({ client, assert }) => {
     const user = await getUser(['company'])

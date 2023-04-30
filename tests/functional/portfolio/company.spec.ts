@@ -1,11 +1,9 @@
-import TestUtils from '@ioc:Adonis/Core/TestUtils'
 import { test } from '@japa/runner'
 import Company from 'App/Models/Portfolio/Company'
-import { getUser, registerUser } from '../base'
+import { getUser, testSetup } from '../base'
 
 test.group('Portfolio -> companies', (group) => {
-  group.setup(registerUser)
-  group.teardown(TestUtils.db().truncate)
+  group.setup(testSetup)
 
   test('list companies', async ({ client }) => {
     const user = await getUser(['company'])

@@ -1,18 +1,15 @@
-import TestUtils from '@ioc:Adonis/Core/TestUtils'
 import { test } from '@japa/runner'
 import { sumRelations } from 'App/Helpers/Model'
 import Company from 'App/Models/Portfolio/Company'
 import IpPortfolio from 'App/Models/Portfolio/IpPortfolio'
 import Patent from 'App/Models/Portfolio/Patent'
-import { getUser, registerUser } from '../base'
+import { getUser, makeEpoMock, testSetup, TEST_PATENT_NUMBER } from '../base'
 
-const TEST_PATENT_NUMBER = 'WO2009108697'
-
-test.group('Portfolio patent costs', (group) => {
-  group.setup(registerUser)
-  group.teardown(TestUtils.db().truncate)
+test.group('Portfolio -> Patent Costs', (group) => {
+  group.setup(testSetup)
 
   test('store patent cost', async ({ client, assert }) => {
+    const epoMock = makeEpoMock()
     const user = await getUser(['company'])
     const portfolioResponse = await client
       .post('ip-portfolios')
@@ -48,6 +45,9 @@ test.group('Portfolio patent costs', (group) => {
     assert.containsSubset(patent.serialize(), { meta: { costsAmountSum: 10_000 } })
     assert.containsSubset(ipPortfolio.serialize(), { meta: { patentCostsAmountSum: 10_000 } })
     assert.containsSubset(company.serialize(), { meta: { patentCostsAmountSum: 10_000 } })
+
+    epoMock.verify()
+    epoMock.restore()
   })
 
   test('list patent costs', async ({ client, assert }) => {
